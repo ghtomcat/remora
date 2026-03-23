@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PartTech — Ausgaben</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:      #f5f5f7;
+      --surface: #ffffff;
+      --border:  #d2d2d7;
+      --text:    #1d1d1f;
+      --muted:   #6e6e73;
+      --accent:  #0071e3;
+      --green:   #34c759;
+      --red:     #ff3b30;
+      --font:    'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    html, body {
+      min-height: 100vh;
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font);
+      font-size: 14px;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    header {
+      background: rgba(255,255,255,0.85);
+      backdrop-filter: saturate(180%) blur(20px);
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      padding: 0 24px;
+      height: 52px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .logo { font-size: 17px; font-weight: 600; letter-spacing: -0.02em; }
+    .logo span { color: var(--accent); }
+    .header-link { font-size: 12px; color: var(--accent); text-decoration: none; }
+    .header-link:hover { text-decoration: underline; }
+
+    main {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 48px 24px;
+    }
+
+    .eyebrow {
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--accent);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 8px;
+    }
+
+    h1 {
+      font-size: 32px;
+      font-weight: 600;
+      letter-spacing: -0.03em;
+      margin-bottom: 32px;
+    }
+
+    /* ── Totals ── */
+    .totals {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 12px;
+      margin-bottom: 32px;
+    }
+
+    .total-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px;
+    }
+
+    .total-label {
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-bottom: 8px;
+    }
+
+    .total-value {
+      font-size: 28px;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      color: var(--text);
+    }
+
+    .total-value.red { color: var(--red); }
+
+    /* ── Form ── */
+    .form-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 24px;
+      margin-bottom: 24px;
+    }
+
+    .form-title {
+      font-size: 15px;
+      font-weight: 600;
+      margin-bottom: 16px;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .form-group.full { grid-column: 1 / -1; }
+
+    label {
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    input, select, textarea {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 10px 12px;
+      font-family: var(--font);
+      font-size: 14px;
+      color: var(--text);
+      outline: none;
+      transition: border-color 0.15s;
+    }
+
+    input:focus, select:focus, textarea:focus {
+      border-color: var(--accent);
+    }
+
+    textarea { resize: vertical; min-height: 60px; }
+
+    .btn-row {
+      display: flex;
+      gap: 8px;
+      justify-content: flex-end;
+    }
+
+    button {
+      padding: 10px 20px;
+      border-radius: 8px;
+      font-family: var(--font);
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      border: none;
+      transition: opacity 0.15s;
+    }
+
+    button:hover { opacity: 0.85; }
+
+    .btn-primary { background: var(--accent); color: white; }
+    .btn-secondary { background: var(--bg); border: 1px solid var(--border); color: var(--text); }
+    .btn-danger { background: var(--red); color: white; padding: 6px 12px; font-size: 12px; }
+
+    /* ── Table ── */
+    .table-wrap {
+      background: var(--surface);
+      border-radius: 16px;
+      border: 1px solid var(--border);
+      overflow: hidden;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+    }
+
+    .table-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 20px;
+      border-bottom: 1px solid var(--border);
+      background: #f5f5f7;
+    }
+
+    .table-header-title { font-size: 13px; font-weight: 600; }
+
+    table { width: 100%; border-collapse: collapse; }
+
+    thead th {
+      padding: 10px 20px;
+      text-align: left;
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      background: #f5f5f7;
+      border-bottom: 1px solid var(--border);
+    }
+
+    tbody tr { border-bottom: 1px solid #f0f0f5; transition: background 0.1s; }
+    tbody tr:last-child { border-bottom: none; }
+    tbody tr:hover { background: #fafafa; }
+
+    td { padding: 14px 20px; vertical-align: middle; }
+
+    .td-amount {
+      font-family: 'SF Mono', 'Menlo', monospace;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--red);
+    }
+
+    .badge-cat {
+      display: inline-block;
+      font-size: 10px;
+      font-weight: 500;
+      padding: 3px 8px;
+      border-radius: 20px;
+      background: rgba(0,113,227,0.08);
+      color: var(--accent);
+    }
+
+    .td-date { font-size: 12px; color: var(--muted); }
+    .td-note { font-size: 12px; color: var(--muted); max-width: 200px; }
+
+    .empty {
+      text-align: center;
+      padding: 48px 24px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    footer {
+      text-align: center;
+      padding: 32px 24px;
+      font-size: 12px;
+      color: var(--muted);
+    }
+    footer a { color: var(--accent); text-decoration: none; }
+
+    @media (max-width: 600px) {
+      .form-grid { grid-template-columns: 1fr; }
+      .td-note { display: none; }
+      h1 { font-size: 24px; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="logo">PartTech <span>Ausgaben</span></div>
+  <a href="index.html" class="header-link">← Explorer</a>
+</header>
+
+<main>
+  <div class="eyebrow">Finanzen · Bootstrap</div>
+  <h1>Ausgaben</h1>
+
+  <div class="totals">
+    <div class="total-card">
+      <div class="total-label">Total Ausgaben</div>
+      <div class="total-value red" id="total-all">CHF 0.00</div>
+    </div>
+    <div class="total-card">
+      <div class="total-label">Hardware</div>
+      <div class="total-value" id="total-hardware">CHF 0.00</div>
+    </div>
+    <div class="total-card">
+      <div class="total-label">Software</div>
+      <div class="total-value" id="total-software">CHF 0.00</div>
+    </div>
+    <div class="total-card">
+      <div class="total-label">Sonstiges</div>
+      <div class="total-value" id="total-sonstiges">CHF 0.00</div>
+    </div>
+  </div>
+
+  <div class="form-card">
+    <div class="form-title">Neue Ausgabe</div>
+    <div class="form-grid">
+      <div class="form-group">
+        <label>Datum</label>
+        <input type="date" id="inp-date">
+      </div>
+      <div class="form-group">
+        <label>Betrag (CHF)</label>
+        <input type="number" id="inp-amount" placeholder="0.00" step="0.01" min="0">
+      </div>
+      <div class="form-group">
+        <label>Kategorie</label>
+        <select id="inp-category">
+          <option value="Hardware">Hardware</option>
+          <option value="Software">Software</option>
+          <option value="Reise">Reise</option>
+          <option value="Essen">Essen</option>
+          <option value="Sonstiges">Sonstiges</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Beschreibung</label>
+        <input type="text" id="inp-desc" placeholder="z.B. Mouser Bestellung">
+      </div>
+      <div class="form-group full">
+        <label>Notiz</label>
+        <textarea id="inp-note" placeholder="Optional..."></textarea>
+      </div>
+    </div>
+    <div class="btn-row">
+      <button class="btn-secondary" onclick="clearForm()">Löschen</button>
+      <button class="btn-primary" onclick="addExpense()">Hinzufügen</button>
+    </div>
+  </div>
+
+  <div class="table-wrap">
+    <div class="table-header">
+      <div class="table-header-title" id="entry-count">0 Einträge</div>
+      <button class="btn-secondary" onclick="exportCSV()" style="padding:6px 14px;font-size:12px;">Export CSV</button>
+    </div>
+    <table>
+      <thead>
+        <tr>
+          <th>Datum</th>
+          <th>Beschreibung</th>
+          <th>Kategorie</th>
+          <th>Betrag</th>
+          <th>Notiz</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody id="expense-table">
+        <tr>
+          <td colspan="6" class="empty">Noch keine Ausgaben. Füge deine erste hinzu.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</main>
+
+<footer>
+  <a href="https://parttech-winterthur.ch">PartTech Winterthur</a> · Ausgaben · Bootstrap Mode
+</footer>
+
+<script>
+  const STORAGE_KEY = 'parttech_expenses';
+
+  function load() {
+    return JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+  }
+
+  function save(data) {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+  }
+
+  function fmt(n) {
+    return 'CHF ' + Number(n).toFixed(2);
+  }
+
+  function setToday() {
+    const d = new Date();
+    document.getElementById('inp-date').value = d.toISOString().split('T')[0];
+  }
+
+  function clearForm() {
+    document.getElementById('inp-amount').value = '';
+    document.getElementById('inp-desc').value = '';
+    document.getElementById('inp-note').value = '';
+    setToday();
+  }
+
+  function addExpense() {
+    const date     = document.getElementById('inp-date').value;
+    const amount   = parseFloat(document.getElementById('inp-amount').value);
+    const category = document.getElementById('inp-category').value;
+    const desc     = document.getElementById('inp-desc').value.trim();
+    const note     = document.getElementById('inp-note').value.trim();
+
+    if (!date || isNaN(amount) || amount <= 0 || !desc) {
+      alert('Bitte Datum, Betrag und Beschreibung ausfüllen.');
+      return;
+    }
+
+    const expenses = load();
+    expenses.unshift({ id: Date.now(), date, amount, category, desc, note });
+    save(expenses);
+    render();
+    clearForm();
+  }
+
+  function deleteExpense(id) {
+    const expenses = load().filter(e => e.id !== id);
+    save(expenses);
+    render();
+  }
+
+  function render() {
+    const expenses = load();
+    const tbody = document.getElementById('expense-table');
+
+    // Totals
+    const total = expenses.reduce((s, e) => s + e.amount, 0);
+    const hw    = expenses.filter(e => e.category === 'Hardware').reduce((s, e) => s + e.amount, 0);
+    const sw    = expenses.filter(e => e.category === 'Software').reduce((s, e) => s + e.amount, 0);
+    const rest  = expenses.filter(e => !['Hardware','Software'].includes(e.category)).reduce((s, e) => s + e.amount, 0);
+
+    document.getElementById('total-all').textContent      = fmt(total);
+    document.getElementById('total-hardware').textContent = fmt(hw);
+    document.getElementById('total-software').textContent = fmt(sw);
+    document.getElementById('total-sonstiges').textContent = fmt(rest);
+    document.getElementById('entry-count').textContent    = expenses.length + ' Einträge';
+
+    if (expenses.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="6" class="empty">Noch keine Ausgaben. Füge deine erste hinzu.</td></tr>';
+      return;
+    }
+
+    tbody.innerHTML = expenses.map(e => `
+      <tr>
+        <td class="td-date">${e.date}</td>
+        <td>${e.desc}</td>
+        <td><span class="badge-cat">${e.category}</span></td>
+        <td class="td-amount">${fmt(e.amount)}</td>
+        <td class="td-note">${e.note || '–'}</td>
+        <td><button class="btn-danger" onclick="deleteExpense(${e.id})">×</button></td>
+      </tr>
+    `).join('');
+  }
+
+  function exportCSV() {
+    const expenses = load();
+    if (expenses.length === 0) { alert('Keine Daten.'); return; }
+    const header = 'Datum,Beschreibung,Kategorie,Betrag,Notiz';
+    const rows = expenses.map(e =>
+      `${e.date},"${e.desc}","${e.category}",${e.amount.toFixed(2)},"${e.note || ''}"`
+    );
+    const csv = [header, ...rows].join('\n');
+    const blob = new Blob([csv], { type: 'text/csv' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'parttech_ausgaben.csv';
+    a.click();
+  }
+
+  // Init
+  setToday();
+  render();
+</script>
+</body>
+</html>

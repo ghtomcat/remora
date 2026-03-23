@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PartTech Explorer — Luftqualität Effretikon</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:      #0e1117;
+      --surface: #161b25;
+      --border:  #1f2937;
+      --text:    #e8eaf0;
+      --muted:   #6b7280;
+      --accent:  #3b82f6;
+      --green:   #22c55e;
+      --yellow:  #eab308;
+      --red:     #ef4444;
+      --mono:    'DM Mono', monospace;
+      --sans:    'DM Sans', sans-serif;
+    }
+
+    html, body {
+      min-height: 100vh;
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--sans);
+      font-size: 14px;
+    }
+
+    /* ── Header ── */
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 24px;
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .logo {
+      font-family: var(--mono);
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--accent);
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+
+    .header-link {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--muted);
+      text-decoration: none;
+    }
+
+    .header-link:hover { color: var(--accent); }
+
+    /* ── Main ── */
+    main {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 48px 24px;
+    }
+
+    .eyebrow {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--accent);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 12px;
+    }
+
+    h1 {
+      font-size: 28px;
+      font-weight: 600;
+      color: var(--text);
+      line-height: 1.2;
+      margin-bottom: 16px;
+    }
+
+    .description {
+      font-size: 15px;
+      color: var(--muted);
+      line-height: 1.7;
+      max-width: 600px;
+      margin-bottom: 40px;
+    }
+
+    .description strong {
+      color: var(--text);
+      font-weight: 500;
+    }
+
+    /* ── Cards ── */
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 16px;
+      margin-bottom: 48px;
+    }
+
+    .card {
+      display: block;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 28px;
+      text-decoration: none;
+      color: var(--text);
+      transition: border-color 0.15s, box-shadow 0.15s;
+    }
+
+    .card:hover {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 1px var(--accent), 0 8px 32px rgba(59,130,246,0.1);
+    }
+
+    .card-icon {
+      font-size: 28px;
+      margin-bottom: 16px;
+    }
+
+    .card-title {
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 8px;
+    }
+
+    .card-desc {
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.6;
+      margin-bottom: 20px;
+    }
+
+    .card-tag {
+      display: inline-block;
+      font-family: var(--mono);
+      font-size: 10px;
+      color: var(--accent);
+      background: rgba(59,130,246,0.1);
+      border: 1px solid rgba(59,130,246,0.2);
+      border-radius: 4px;
+      padding: 3px 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    /* ── Meta ── */
+    .meta-section {
+      border-top: 1px solid var(--border);
+      padding-top: 32px;
+    }
+
+    .meta-title {
+      font-family: var(--mono);
+      font-size: 10px;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 16px;
+    }
+
+    .meta-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 16px;
+    }
+
+    .meta-item {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .meta-label {
+      font-size: 10px;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    .meta-value {
+      font-family: var(--mono);
+      font-size: 13px;
+      color: var(--text);
+    }
+
+    /* ── Footer ── */
+    footer {
+      text-align: center;
+      padding: 32px 24px;
+      border-top: 1px solid var(--border);
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--muted);
+    }
+
+    footer a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="logo">PartTech Winterthur</div>
+  <a href="https://parttech-winterthur.ch" class="header-link">parttech-winterthur.ch →</a>
+</header>
+
+<main>
+  <div class="eyebrow">Explorer · Felddaten</div>
+  <h1>Echte Sensordaten aus Effretikon</h1>
+  <p class="description">
+    Rohdaten unseres Prototyp-Sensors — aufgezeichnet während eines Spaziergangs in Effretikon.
+    <strong>Sensirion SPS30</strong> (PM1–PM10) + <strong>SHT31</strong> (Temperatur, Luftfeuchtigkeit) kombiniert mit GPS
+    auf einem <strong>RAK4630</strong>, gespeichert im Offline-Modus (Queue).
+    Kein Labor. Echter Spaziergang. Echte Luft.
+  </p>
+
+  <div class="cards">
+    <a href="map.html" class="card">
+      <div class="card-icon">🗺️</div>
+      <div class="card-title">Interaktive Karte</div>
+      <div class="card-desc">
+        GPS-Track mit Luftqualitäts-Overlay. Klick auf jeden Messpunkt für Detaildaten.
+        Metrik wechselbar: PM2.5, PM10, Temperatur, Licht und mehr.
+      </div>
+      <span class="card-tag">Leaflet · Live-Daten</span>
+    </a>
+
+    <a href="viz.png" class="card">
+      <div class="card-icon">📊</div>
+      <div class="card-title">Datenvisualisierung</div>
+      <div class="card-desc">
+        Zeitreihen aller Sensorparameter: Feinstaub, Temperatur, Luftfeuchtigkeit,
+        Akku-Spannung und Lichtstärke über den gesamten Spaziergang.
+      </div>
+      <span class="card-tag">PNG · Matplotlib</span>
+    </a>
+  </div>
+
+  <div class="meta-section">
+    <div class="meta-title">Technische Details</div>
+    <div class="meta-grid">
+      <div class="meta-item">
+        <div class="meta-label">Sensor</div>
+        <div class="meta-value">Sensirion SPS30 + SHT31</div>
+      </div>
+      <div class="meta-item">
+        <div class="meta-label">Board</div>
+        <div class="meta-value">RAK4630 (nRF52840)</div>
+      </div>
+      <div class="meta-item">
+        <div class="meta-label">Übertragung</div>
+        <div class="meta-value">Offline Queue (BLE)</div>
+      </div>
+      <div class="meta-item">
+        <div class="meta-label">Messparameter</div>
+        <div class="meta-value">PM1–PM10, Temp, RH, Lux, GPS</div>
+      </div>
+      <div class="meta-item">
+        <div class="meta-label">Kalibrierung</div>
+        <div class="meta-value">EMPA Dübendorf + OSTLUFT (geplant)</div>
+      </div>
+      <div class="meta-item">
+        <div class="meta-label">Datenformat</div>
+        <div class="meta-value">JSONL · Open Data</div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<footer>
+  <a href="https://parttech-winterthur.ch">PartTech Winterthur</a> · Bürgersensornetz für Winterthurер Luft · Daten offen und frei
+</footer>
+
+</body>
+</html>
