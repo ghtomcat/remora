@@ -146,7 +146,7 @@ read and the OLED shows a sleep screen with live status icons.
 All LEDs are switched off during sleep.
 
 ### Common Peripherals
-- I2C: SDA (Pin 14), SCL (Pin 13)
+- I2C: SDA (Pin 13), SCL (Pin 14)
 - SPI: MOSI (Pin 45), MISO (Pin 44), SCK (Pin 43)
 - UART: TX (Pin 16), RX (Pin 15)
 
