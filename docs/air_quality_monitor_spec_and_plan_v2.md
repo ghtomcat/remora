@@ -1,39 +1,9 @@
-# Bus Tracker Firmware Specification
+# Air Quality Monitor Firmware Specification — v2
 
 ## Project Overview
-A low-power GPS bus tracker using WisBlock hardware, LoRaWAN communication, and sensor fusion.
+A low-power air quality monitor with GPS using WisBlock hardware, LoRaWAN communication, and sensor fusion.
 The device is roof-mounted on a bus, solar powered, and designed to scale from 1 to 50 units.
 Target deployment: Stadtbus Winterthur, Switzerland.
-
----
-
-## Repository Structure
-```
-/
-├── src/
-│   └── main.cpp               # Firmware entry point
-├── include/
-│   ├── config.h               # LoRaWAN credentials (gitignored)
-│   ├── config.h.example       # Template for config.h
-│   ├── state_machine.h
-│   ├── gps_manager.h
-│   ├── imu_manager.h
-│   ├── lora_manager.h
-│   ├── storage.h              # Storage abstraction interface
-│   └── debug.h
-├── tools/
-│   ├── ttn_listener.py        # MQTT → JSONL
-│   ├── analyse_debug.py       # Debug data analysis and map visualisation
-│   ├── download_gtfs.py       # Download and filter Swiss GTFS data
-│   └── webmap/
-│       └── index.html         # Self-contained Leaflet.js web map
-├── data/
-│   └── data.jsonl             # Live MQTT packet log (gitignored)
-├── tools/gtfs/
-│   └── winterthur/            # Pre-filtered GTFS data for Winterthur
-├── platformio.ini
-└── README.md
-```
 
 ---
 
@@ -77,6 +47,9 @@ Target deployment: Stadtbus Winterthur, Switzerland.
   - Current draw in motion detection mode: ~3.9µA
   - Sample rate: up to 1000Hz
   - Used for: motion detection, stop validation, sensor fusion, dead reckoning
+
+### Air Quality Sensor
+- **SEN66-SIN-T**
 
 ### Power
 - Solar panel connected to RAK19001 solar input

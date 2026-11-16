@@ -1,8 +1,8 @@
-# Bus Sensor Firmware Specification — v1 (as built)
+# Air Quality Monitor Firmware Specification — v1 (as built)
 
 This document describes the **v1 firmware as it is implemented** in `src/`. It replaces the
 original v1 planning spec. For the SEN66-based v2 plan, see
-[bus_tracker_spec_and_plan_v2.md](bus_tracker_spec_and_plan_v2.md).
+[air_quality_monitor_spec_and_plan_v2.md](air_quality_monitor_spec_and_plan_v2.md).
 
 ---
 
