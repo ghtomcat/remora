@@ -40,14 +40,14 @@ All subsystems are guarded by preprocessor flags in `platformio.ini` (e.g. `GPS_
 
 ### Wake Cycle (main.cpp)
 
-`main.cpp` coordinates a repeating 5-minute cycle:
+`main.cpp` coordinates a repeating cycle (currently ~30 s for demos/testing — `SLEEP_INTERVAL_SEC = 30` in `power.h`, minus awake time, minimum 10 s sleep):
 1. Wake GPS from standby (PMTK commands)
 2. Wait for GPS fix (up to 60s timeout)
 3. Wait for SPS30 warmup (15s)
 4. Read all sensors (~5s window)
 5. Send 24-byte LoRaWAN uplink
 6. Update OLED display + animate status LEDs
-7. Sleep for 270s (FreeRTOS delay — keeps BLE active)
+7. Sleep for the remainder of `SLEEP_INTERVAL_SEC` (FreeRTOS delay — keeps BLE active)
 
 **Critical initialization order:** LoRaWAN must be initialized before BLE and SPS30 to correctly receive the OTAA join-accept timing window.
 
