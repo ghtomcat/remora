@@ -53,7 +53,7 @@ All subsystems are guarded by preprocessor flags in `platformio.ini` (e.g. `GPS_
 
 ### LoRaWAN Payload Format
 
-24-byte binary payload, decoded by `ttn_decoder.js`:
+24-byte binary payload, decoded by `tools/ttn_decoder.js`:
 - Bytes 0–3: Latitude (int32 BE ×10⁶)
 - Bytes 4–7: Longitude (int32 BE ×10⁶)
 - Bytes 8–9: Altitude (int16 BE)
@@ -66,7 +66,7 @@ All subsystems are guarded by preprocessor flags in `platformio.ini` (e.g. `GPS_
 
 ## Credentials
 
-LoRaWAN keys (DevEUI, AppEUI, AppKey) live in `src/credentials.h`, which is `.gitignore`d. Never commit this file. See `CREDENTIALS_SETUP.md` for how to obtain keys from TTN console and format them (MSB byte order).
+LoRaWAN keys (DevEUI, AppEUI, AppKey) live in `src/credentials.h`, which is `.gitignore`d. Never commit this file. See `docs/CREDENTIALS_SETUP.md` for how to obtain keys from TTN console and format them (MSB byte order).
 
 ## Known Issues / Gotchas
 

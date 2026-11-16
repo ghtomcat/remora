@@ -59,6 +59,10 @@ pio run --target upload && pio device monitor
 │   ├── main.cpp          # Setup/loop coordinator
 │   ├── gps.h / gps.cpp   # GPS reading via TinyGPSPlus (Serial1, 9600 baud)
 │   └── lorawan.h / lorawan.cpp  # LoRaWAN skeleton (guarded by LORAWAN_ENABLED)
+├── docs/                 # Specs, power management notes, credentials setup
+├── tools/
+│   └── ttn_decoder.js    # TTN payload decoder
+├── SEN66/                # Sensirion SEN6x datasheet, app notes, STEP models
 └── platformio.ini        # PlatformIO configuration
 ```
 
