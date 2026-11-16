@@ -1,6 +1,8 @@
-# RAK4630 PlatformIO Project
+# Remora
 
-This project is configured for the RAKwireless RAK4630 module using PlatformIO and the Arduino framework.
+Solar-powered air quality and GPS monitor for public buses. Runs on a RAKwireless RAK4630
+(WisBlock) module, sends readings over LoRaWAN every 5 minutes and exposes BLE UART for
+local debugging. Built with PlatformIO and the Arduino framework.
 
 ## Hardware
 
@@ -56,15 +58,30 @@ pio run --target upload && pio device monitor
 
 ```
 ├── src/
-│   ├── main.cpp          # Setup/loop coordinator
-│   ├── gps.h / gps.cpp   # GPS reading via TinyGPSPlus (Serial1, 9600 baud)
-│   └── lorawan.h / lorawan.cpp  # LoRaWAN skeleton (guarded by LORAWAN_ENABLED)
-├── docs/                 # Specs, power management notes, credentials setup
+│   ├── main.cpp                     # Wake cycle coordinator (GPS → sensors → uplink → sleep)
+│   ├── gps.h / .cpp                 # GPS via TinyGPSPlus (Serial1, 9600 baud)
+│   ├── sht31.h / .cpp               # Temperature / humidity (SHT31)
+│   ├── pm.h / .cpp                  # Particulate matter (SPS30)
+│   ├── ina219.h / .cpp              # Solar panel voltage / current
+│   ├── veml7700.h / .cpp            # Ambient light (lux)
+│   ├── battery.h / .cpp             # Battery voltage (ADC)
+│   ├── mpu6050.h / .cpp             # IMU
+│   ├── lorawan.h / .cpp             # LoRaWAN OTAA join and uplink
+│   ├── lorawan_queue.h / .cpp       # Offline uplink queue in internal flash
+│   ├── ble_uart.h / .cpp            # BLE UART debug console
+│   ├── power.h / .cpp               # Power management
+│   ├── oled.h / .cpp                # SSD1306 OLED display
+│   ├── status_leds.h / .cpp         # Built-in status LEDs
+│   └── credentials.h.template       # Template for LoRaWAN keys (copy to credentials.h)
+├── docs/                            # Specs, power management notes, credentials setup
 ├── tools/
-│   └── ttn_decoder.js    # TTN payload decoder
-├── SEN66/                # Sensirion SEN6x datasheet, app notes, STEP models
-└── platformio.ini        # PlatformIO configuration
+│   └── ttn_decoder.js               # TTN payload decoder
+├── SEN66/                           # Sensirion SEN6x datasheet, app notes, STEP models
+└── platformio.ini                   # PlatformIO configuration and feature flags
 ```
+
+Each subsystem can be switched on or off with a `*_ENABLED` build flag in `platformio.ini`
+(e.g. `GPS_ENABLED=1`, `SPS30_ENABLED=1`, `LORAWAN_ENABLED=1`).
 
 ## Pin Definitions
 
@@ -88,18 +105,20 @@ lib_deps =
     ; Add more libraries here
 ```
 
-## LoRaWAN Activation
+## LoRaWAN Setup
 
-The LoRaWAN code compiles but does not execute (`LORAWAN_ENABLED=0`). To activate when a gateway is in range:
+LoRaWAN keys live in `src/credentials.h`, which is gitignored and must never be committed.
 
-1. Fill in real credentials in `src/lorawan.cpp`:
-   ```cpp
-   uint8_t nodeDeviceEUI[8] = { ... };
-   uint8_t nodeAppEUI[8]    = { ... };
-   uint8_t nodeAppKey[16]   = { ... };
+1. Create the file from the template:
+   ```bash
+   cp src/credentials.h.template src/credentials.h
    ```
-2. Change `LORAWAN_ENABLED=0` → `LORAWAN_ENABLED=1` in `platformio.ini`
-3. `pio run --target upload`
+2. Fill in DevEUI, AppEUI/JoinEUI and AppKey from the TTN console (MSB byte order).
+3. Make sure `LORAWAN_ENABLED=1` is set in `platformio.ini`.
+4. `pio run --target upload`
+
+See [docs/CREDENTIALS_SETUP.md](docs/CREDENTIALS_SETUP.md) for details. Uplinks are 24-byte
+binary payloads; use [tools/ttn_decoder.js](tools/ttn_decoder.js) as the payload formatter in TTN.
 
 ## Known Issue: Board Definition Patch (re-apply after framework updates)
 
@@ -131,7 +150,7 @@ the project directory. They are wiped whenever PlatformIO updates
 
 ## Notes
 
-- The default upload protocol is set to `jlink`. If you're using a different programmer, modify the `upload_protocol` in `platformio.ini`
+- The upload protocol is `nrfutil` (USB DFU). A J-Link alternative is commented out in `platformio.ini`
 - Serial baud rate is set to 115200
 - The board runs at 3.3V - do not connect 5V signals directly
 
